@@ -145,8 +145,9 @@ states.game = {
 		fixDef.restitution = 0.2;
 
 		//loading level data
-		game.get("data/level.dst?" + Math.random(), function(data) {
-			var lines = data.split("\n");
+		var data = platformLevel;
+		//game.get("level.dst", function(data) {
+			var lines = data.split(",");
 			var level = {}, city = {};
 			level.gridSize = [lines[lines.length -1].length, lines.length];
 			level.tileSize = [64, 64];
@@ -232,10 +233,10 @@ states.game = {
 				a2d.mute = !a2d.mute;
 				if(a2d.mute) {
 					mute.text = icon.volumeoff;					
-					a2d.resources.music.stop();					
+					//a2d.resources.music.stop();					
 				} else {
 					mute.text = icon.volumeup;
-					a2d.resources.music.play();
+					//a2d.resources.music.play();
 				}
 				
 			});
@@ -250,7 +251,7 @@ states.game = {
 			//game.scene.push(game.intro);
 			a2d.root.push(game.scene);
 			game.updateLives();
-		})
+		//})
 	},
 	keydown : function(keyCode) {
 		switch(keyCode) {
@@ -328,9 +329,12 @@ var game = {
 	},
 	get: function(datafile, cb) {
 		var xhr = new XMLHttpRequest();
-		xhr.open("GET", datafile);
+		xhr.open("GET", datafile, true);
+		console.log("get " + datafile);
 		xhr.onreadystatechange = function() {
 			if(xhr.readyState === 4) {
+				console.log("got: " + xhr.responseText);
+				console.log(xhr.status);
 				cb(xhr.responseText);
 			}
 		};
@@ -349,14 +353,13 @@ game.credits = {
 	font : "Jakob Fischer / pizzadude.dk"
 };
 
-window.onload = function() {
+window.addEventListener("load", function() {
 	a2d.forceClear = true;
 	a2d.on("load", function() {
-		//game.init();
 		states.set(states.intro);
 	});
 	game.touchies = {};
-	document.addEventListener("touchstart", function(e) {
+	a2d.canvas.addEventListener("touchstart", function(e) {
 		var touch = e.touches[0];
 		if(states.current && states.current.keydown) {
 			if(touch.pageX > a2d.dimension.Width / 2) {
@@ -369,7 +372,7 @@ window.onload = function() {
 		}
 	});
 
-	document.addEventListener("touchend", function(e) {
+	a2d.canvas.addEventListener("touchend", function(e) {
 		var touch = e.changedTouches[0];
 		if(states.current && states.current.keyup) {
 			if(touch.pageX > a2d.dimension.Width / 2) {
@@ -383,7 +386,7 @@ window.onload = function() {
 		}
 	});
 
-	document.addEventListener("touchmove", function(e) {
+	a2d.canvas.addEventListener("touchmove", function(e) {
 		var touch = e.changedTouches[0];
 		if(states.current && states.current.keydown) {
 			if(game.touchies[touch.identifier] && game.touchies[touch.identifier] > touch.pageY + 30) {
@@ -407,6 +410,7 @@ window.onload = function() {
 			states.current.run();
 		}
 	});
+	
 	var loading = new a2d.Label("loading...", { font : "72px fearless", position: new a2d.Position( a2d.dimension.Width / 2, a2d.dimension.Height / 2), color: "#FFFFFF", border: { width: 5, color: "#000000"} });
     a2d.on("progress", function(progress) {
     	var pct = (100.0 / progress.total) * progress.loaded;
@@ -423,12 +427,13 @@ window.onload = function() {
 				"sky"  : "images/sky.png",
 				"grenade" : "images/grenade.png",
 				"explosion" : "images/explosion.png",
-				"dialog" : "images/intro.png",
+				"dialog" : "images/intro.png" });
+	/*
 				"explode" : "audio/Explosion13.ogg",
 				"blip" : "audio/Blip_Select.ogg",
 				"start": "audio/Randomize.ogg",
 				"coin" : "audio/Pickup_Coin.ogg",
 				"jump" : "audio/Jump5.ogg",
 				"shoot" : "audio/Laser_Shoot12.ogg",				
-				"music": "audio/beat_one.ogg" });
-}
+				"music": "audio/beat_one.ogg" }); */
+});

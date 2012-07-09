@@ -46,7 +46,7 @@ game.Player = function(pos) {
 	    				game.level.remove(game.level.indexOf(userData.die()));
 	    				game.humans--;
 	    				game.humansLabel.text = "humans eaten: " + (14 - game.humans) + "/14";
-	    				a2d.resources.coin.play();
+	    				//a2d.resources.coin.play();
     				}
     				if (userData.grenade) {
 	    				userData.die();	    				
