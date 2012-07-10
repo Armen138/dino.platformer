@@ -6,7 +6,10 @@ states.game = {
 		game.level = null;
 		setInterval(function() {
 			game.fps = game.frames;
+			game.dps = a2d.drawCounter;
+			console.log(a2d.drawCounter);
 			game.frames = 0;
+			a2d.drawCounter = 0;
 		}, 1000);		
 		// setting up physics stuff
 		/*var fixDef = new Box2D.Dynamics.b2FixtureDef,
@@ -90,6 +93,7 @@ states.game = {
 			var gh = new a2d.Label(icon.github, { font : "48px fontello", position: new a2d.Position( a2d.dimension.Width - 50, 50 ), color: "#FFFFFF", border: { width: 5, color: "#000000"} });					
 			game.humansLabel = new a2d.Label("humans eaten: 0/" + game.humans, { font : "32px Orotund", textAlign: "left", position: new a2d.Position( 50, 100 ), color: "#FFFFFF", border: { width: 5, color: "#000000"} });
 			game.fpsLabel = new a2d.Label("fps: " + 0, { font : "32px Orotund", textAlign: "left", position: new a2d.Position( 50, 150 ), color: "#FFFFFF", border: { width: 5, color: "#000000"} });
+			game.dpsLabel = new a2d.Label("dps: " + 0, { font : "32px Orotund", textAlign: "left", position: new a2d.Position( 50, 180 ), color: "#FFFFFF", border: { width: 5, color: "#000000"} });
 			gh.on("click", function() {
 				window.location = "https://github.com/hashbbg/bbgchallenge7";
 			});		
@@ -125,6 +129,7 @@ states.game = {
 			game.scene.push(game.lives);
 			game.scene.push(game.humansLabel);
 			game.scene.push(game.fpsLabel);
+			game.scene.push(game.dpsLabel);
 			//game.scene.push(game.intro);
 			a2d.root.push(game.scene);
 			game.updateLives();
@@ -169,6 +174,7 @@ states.game = {
 			//game.world.Step(0.12, 10, 10);
 			//game.world.ClearForces();
 			game.fpsLabel.text = "fps: " + game.fps;
+			game.dpsLabel.text = "dps: " + game.dps;
 			if(game.player) {
 				var p = game.player.position.clone(),
 					parallax;

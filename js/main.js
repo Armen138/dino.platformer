@@ -162,6 +162,7 @@ game.credits = {
 
 window.addEventListener("load", function() {
 	a2d.forceClear = true;
+	a2d.drawCounter = 0;
 	a2d.on("load", function() {
 		//game.init();
 		//states.set(states.intro);
